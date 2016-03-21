@@ -15,9 +15,28 @@ class Game {
         case PlayerTwo
     }
     
+    enum GameState {
+        case Start
+        case InProgress
+        case PlayerOneWon
+        case PlayerTwoWon
+    }
+    
     var whosTurnIsIt:WhosTurn;
+    
+    let playerOne:Player
+    let playerTwo:Player
+    
+    let gameState:GameState
     
     init() {
         whosTurnIsIt = .PlayerOne
+        playerOne = Player()
+        playerTwo = Player()
+        gameState = .Start
+    }
+    
+    func launchMissle() {
+        
     }
 }
