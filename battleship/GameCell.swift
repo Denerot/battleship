@@ -17,11 +17,9 @@ class GameCell:UICollectionViewCell {
         sizeToFit()
         
         updateLabel()
-        
         label.font = label.font.fontWithSize(9)
         layer.borderWidth = 0.5
         layer.borderColor = UIColor.blackColor().CGColor
-        addSubview(label)
         contentView.addSubview(label)
         setNeedsDisplay()
     }

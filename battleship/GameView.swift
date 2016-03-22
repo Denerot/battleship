@@ -26,12 +26,13 @@ class GameView:UIView {
         playerGridView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
         super.init(frame: frame)
         
-        launchGridView.backgroundColor = UIColor.greenColor()
+        launchGridView.backgroundColor = UIColor.whiteColor()
 
-        playerGridView.backgroundColor = UIColor.blueColor()
+        playerGridView.backgroundColor = UIColor.cyanColor()
         
         addSubview(launchGridView)
         addSubview(playerGridView)
+        setNeedsDisplay()
     }
 
     required init?(coder aDecoder: NSCoder) {

@@ -10,7 +10,7 @@ import UIKit
 
 class GameViewController:UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     var gameView:GameView
-    let game:Game
+    var game:Game
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         gameView = GameView()
@@ -18,7 +18,7 @@ class GameViewController:UIViewController, UICollectionViewDataSource, UICollect
         super.init(nibName: nil, bundle: nil)
         
         
-        //view.setNeedsDisplay()
+        view.setNeedsDisplay()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -27,82 +27,58 @@ class GameViewController:UIViewController, UICollectionViewDataSource, UICollect
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if collectionView == gameView.launchGridView {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("LaunchGridCell", forIndexPath: indexPath)
-            cell.backgroundColor=UIColor.whiteColor()
-            cell.layer.borderWidth = 0.5
-            cell.layer.borderColor = UIColor.blackColor().CGColor
+            let cell = gameView.launchGridView.dequeueReusableCellWithReuseIdentifier("LaunchGridCell", forIndexPath: indexPath) as! GameCell
+            print("row \(indexPath.row)")
+            print("item \(indexPath.item)")
+            print("section \(indexPath.section)")
             
-            let cellLabel = UILabel(frame: CGRect(x: 1, y: 0, width: cell.frame.width, height: cell.frame.height))
             if(game.whosTurnIsIt == WhosTurn.PlayerOne) {
                 if game.playerOne.launchHistory[Coordinate(x: indexPath.row, y: indexPath.section)] == GridState.Hit {
-                    cellLabel.text = "Hit"
+                    cell.cellState = GridState.Hit
                 }
                 else if game.playerOne.launchHistory[Coordinate(x: indexPath.row, y: indexPath.section)] == GridState.Sunk {
-                    cellLabel.text = "Sunk"
+                    cell.cellState = GridState.Sunk
                 }
             }
             else {
                 if game.playerTwo.launchHistory[Coordinate(x: indexPath.row, y: indexPath.section)] == GridState.Hit {
-                    cellLabel.text = "Hit"
+                    cell.cellState = GridState.Hit
                 }
                 else if game.playerTwo.launchHistory[Coordinate(x: indexPath.row, y: indexPath.section)] == GridState.Sunk {
-                    cellLabel.text = "Sunk"
+                    cell.cellState = GridState.Sunk
                 }
             }
-            cellLabel.font = cellLabel.font.fontWithSize(9)
-            cell.contentView.addSubview(cellLabel)
             cell.setNeedsDisplay()
-            cell.setNeedsLayout()
             return cell
         }
         else {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("PlayerGridCell", forIndexPath: indexPath)
-            cell.backgroundColor=UIColor.cyanColor()
-            cell.layer.borderWidth = 0.5
-            cell.layer.borderColor = UIColor.blackColor().CGColor
-            
-            let cellLabel = UILabel(frame: CGRect(x: 1, y: 2, width: cell.frame.width, height: cell.frame.height))
+            let cell = gameView.playerGridView.dequeueReusableCellWithReuseIdentifier("PlayerGridCell", forIndexPath: indexPath) as! GameCell
+
             if(game.whosTurnIsIt == WhosTurn.PlayerOne) {
-                if game.playerOne.playerGrid[Int(indexPath.row)][Int(indexPath.section)] == GridState.Ship {
-                    cellLabel.text = "Ship"
+                if game.playerOne.playerGrid[indexPath.row][indexPath.section] == GridState.Ship {
+                    cell.cellState = GridState.Ship
                 }
-                else if game.playerOne.playerGrid[Int(indexPath.row)][Int(indexPath.section)] == GridState.Hit {
-                    cellLabel.text = "Hit"
+                else if game.playerOne.playerGrid[indexPath.row][indexPath.section] == GridState.Hit {
+                    cell.cellState = GridState.Hit
                 }
-                else if game.playerOne.playerGrid[Int(indexPath.row)][Int(indexPath.section)] == GridState.Sunk {
-                    cellLabel.text = "Sunk"
+                else if game.playerOne.playerGrid[indexPath.row][indexPath.section] == GridState.Sunk {
+                    cell.cellState = GridState.Sunk
                 }
             }
             else {
-                if game.playerTwo.playerGrid[Int(indexPath.row)][Int(indexPath.section)] == GridState.Ship {
-                    cellLabel.text = "Ship"
+                if game.playerTwo.playerGrid[indexPath.row][indexPath.section] == GridState.Ship {
+                    cell.cellState = GridState.Ship
                 }
-                else if game.playerTwo.playerGrid[Int(indexPath.row)][Int(indexPath.section)] == GridState.Hit {
-                    cellLabel.text = "Hit"
+                else if game.playerTwo.playerGrid[indexPath.row][indexPath.section] == GridState.Hit {
+                    cell.cellState = GridState.Hit
                 }
-                else if game.playerTwo.playerGrid[Int(indexPath.row)][Int(indexPath.section)] == GridState.Sunk {
-                    cellLabel.text = "Sunk"
+                else if game.playerTwo.playerGrid[indexPath.row][indexPath.section] == GridState.Sunk {
+                    cell.cellState = GridState.Sunk
                 }
             }
-            cellLabel.font = cellLabel.font.fontWithSize(9)
-            cell.contentView.addSubview(cellLabel)
-            cellLabel.setNeedsDisplay()
             cell.setNeedsDisplay()
-            cell.setNeedsLayout()
             return cell
         }
-        /*let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(UICollectionViewCell.self), forIndexPath: indexPath)
-        cell.backgroundColor=UIColor.whiteColor()
-        let cellLabel = UILabel(frame: CGRect(x: 1, y: 0, width: cell.frame.width, height: cell.frame.height))
-        if(game.whosTurnIsIt == WhosTurn.PlayerOne) {
-            cellLabel.text = String(game.playerTwo.playerGrid[Int(indexPath.row)][Int(indexPath.section)])
-            
-        }
-        cellLabel.font = cellLabel.font.fontWithSize(9)
-
-        cell.contentView.addSubview(cellLabel)
-        cell.setNeedsDisplay()
-        return cell*/
     }
     
     /* Since this controller is only a delegate for the launch grid, we don't need to check which collectionView
@@ -127,13 +103,15 @@ class GameViewController:UIViewController, UICollectionViewDataSource, UICollect
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        gameView.launchGridView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "LaunchGridCell")
-        gameView.playerGridView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "PlayerGridCell")
+        gameView.launchGridView.registerClass(GameCell.self, forCellWithReuseIdentifier: "LaunchGridCell")
+        gameView.playerGridView.registerClass(GameCell.self, forCellWithReuseIdentifier: "PlayerGridCell")
         
         gameView.launchGridView.dataSource = self
         gameView.launchGridView.delegate = self
         
         gameView.playerGridView.dataSource = self
+        view.setNeedsDisplay()
+        gameView.setNeedsDisplay()
         print("view loaded")
     }
     override func loadView() {
