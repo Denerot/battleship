@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Coordinate {
+struct Coordinate:Hashable {
     var x:Int
     var y:Int
     
@@ -16,4 +16,13 @@ struct Coordinate {
         self.x = x;
         self.y = y;
     }
+    var hashValue : Int {
+        get {
+            return "\(self.x),\(self.y)".hashValue
+        }
+    }
+}
+// to be hashable, I guess you have to be equatable as well, http://www.swiftcoder.info/dev/codefellows/2014/8/2/how-to-implement-hashable-for-your-custom-class
+func ==(lhs: Coordinate, rhs: Coordinate) -> Bool {
+    return lhs.hashValue == rhs.hashValue
 }

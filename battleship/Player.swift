@@ -10,17 +10,11 @@ import UIKit
 
 class Player {
     
-    enum GridState {
-        case Empty
-        case Ship
-        case Hit
-        case Miss
-        case Sunk
-    }
+
     
     
     var playerGrid:[[GridState]]
-    var launchHistory:[Coordinate] = []
+    var launchHistory:[Coordinate: GridState] = [:]
     //var launchGrid:[[GridState]]
     var ships:[Ship] = [Ship]()
     
@@ -82,7 +76,7 @@ class Player {
         let remainingSize:Int = size-1
         
         // check to see if starting coordinate overlaps a ship
-        if(playerGrid[Int(startingCoord.x)][Int(startingCoord.y)] == .Ship) {
+        if(playerGrid[Int(startingCoord.x)][Int(startingCoord.y)] == GridState.Ship) {
             return true
         }
         

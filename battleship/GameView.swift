@@ -8,26 +8,30 @@
 
 import UIKit
 
-class GameScreen:UIView {
+class GameView:UIView {
     //player grid
     
     //launch grid
     
     var launchGridView:UICollectionView
-    let playerGridView:UIView = UIView()
+    var layout:UICollectionViewFlowLayout
+    let playerGridView:UICollectionView
     
     override init(frame: CGRect) {
-        let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        launchGridView = UICollectionView(frame: frame, collectionViewLayout: layout)
     
+        layout = UICollectionViewFlowLayout()
+        layout.minimumInteritemSpacing = 0;
+        layout.minimumLineSpacing = 0;
+        launchGridView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
+        playerGridView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
         super.init(frame: frame)
         
         launchGridView.backgroundColor = UIColor.greenColor()
-        playerGridView.backgroundColor = UIColor.redColor()
+
+        playerGridView.backgroundColor = UIColor.blueColor()
         
         addSubview(launchGridView)
         addSubview(playerGridView)
-        setNeedsDisplay()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -42,6 +46,8 @@ class GameScreen:UIView {
         let orientation:UIInterfaceOrientation = UIApplication.sharedApplication().statusBarOrientation
         
         if orientation == .Portrait || orientation == .PortraitUpsideDown {
+            // shave a little off of the top for the carrier/time/battery section
+            (_, windowRect) = windowRect.divide(windowRect.height * 0.04, fromEdge: .MinYEdge)
             (launchGridView.frame, windowRect) = windowRect.divide(windowRect.height * 0.5, fromEdge: CGRectEdge.MinYEdge)
             (playerGridView.frame, windowRect) = windowRect.divide(windowRect.height, fromEdge: .MinYEdge)
         }
@@ -50,7 +56,6 @@ class GameScreen:UIView {
             (playerGridView.frame, windowRect) = windowRect.divide(windowRect.width, fromEdge: .MinXEdge)
         }
         
-
+        layout.itemSize = CGSize(width: launchGridView.frame.width * 0.1, height: launchGridView.frame.height * 0.1)
     }
-
 }
