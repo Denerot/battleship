@@ -15,6 +15,12 @@ enum GameState:Int {
     case PlayerTwoWon
 }
 
+enum GameStatus:Int {
+    case DONE
+    case WAITING
+    case PLAYING
+}
+
 class Game {
     
     var whosTurnIsIt:WhosTurn;
@@ -28,6 +34,8 @@ class Game {
     var playerTwoLaunchHistoryJSON:NSMutableDictionary = NSMutableDictionary()
     let uuid:NSUUID
     var gameState:GameState
+    var name:String = "shaboopi"
+    var status:GameStatus = .WAITING
     
     init() {
         uuid = NSUUID()

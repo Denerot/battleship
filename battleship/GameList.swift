@@ -11,6 +11,8 @@ import Foundation
 class GameList {
     
     var gameList:[Game] = []
+    var gameListDictionary:NSMutableDictionary = NSMutableDictionary()
+    weak var delegate: NSURLSessionDataDelegate? = nil
     
     init() {
         //let documentsDirectory: String? = NSSearchPathForDirectoriesInDomains(
@@ -29,29 +31,26 @@ class GameList {
     
     func requestGamesList() {
         let url:NSURL = NSURL(string: "http://battleship.pixio.com/api/games")!
-        let session = NSURLSession.sharedSession()
-        
+        let config = NSURLSessionConfiguration.defaultSessionConfiguration()
+        let session = NSURLSession(configuration: config, delegate: delegate, delegateQueue: nil)
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "GET"
         request.cachePolicy = NSURLRequestCachePolicy.ReloadIgnoringCacheData
     
-        let task = session.dataTaskWithRequest(request, completionHandler: handler)
+        let task = session.dataTaskWithRequest(request)
     
         task.resume()
     }
     
-    func handler (data: NSData?, response: NSURLResponse?, error: NSError?) {
-        
-        guard let _:NSData = data, let _:NSURLResponse = response  where error == nil else {
-            print("error")
-            return
+    func populateGamesList(gamesData:NSData) {
+        do {
+            try print(NSJSONSerialization.JSONObjectWithData(gamesData, options: NSJSONReadingOptions.MutableContainers) as? [String:AnyObject])
         }
-        
-        let dataString = NSString(data: data!, encoding: NSUTF8StringEncoding)
-        print(dataString)
-        
+        catch {
+            print("json error: \(error)")
+        }
+        //print(gameListDictionary)
     }
     
-
     
 }

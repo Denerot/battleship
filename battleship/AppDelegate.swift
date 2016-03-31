@@ -14,14 +14,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
     var window: UIWindow?
     var notificationController:NotificationController = NotificationController()
     var gameController:GameViewController = GameViewController()
+    var gameListController:GameListController = GameListController()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow()
         gameController.delegate = self
         notificationController.delegate = self
-        let gameList:GameList = GameList()
-        gameList.getGamesList()
         window?.rootViewController = gameController
         window?.makeKeyAndVisible()
         
