@@ -9,18 +9,41 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, NotificationDelegate {
 
     var window: UIWindow?
+    var notificationController:NotificationController = NotificationController()
+    var gameController:GameViewController = GameViewController()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow()
-        let gameController:GameViewController = GameViewController()
+        gameController.delegate = self
+        notificationController.delegate = self
+        let gameList:GameList = GameList()
+        gameList.getGamesList()
         window?.rootViewController = gameController
         window?.makeKeyAndVisible()
         
         return true
+    }
+    
+    func playerTurn(whosTurn:WhosTurn) {
+        notificationController.notificationView.message = "\(whosTurn)'s turn, please pass the device."
+        gameController.presentViewController(notificationController, animated: true, completion: {
+            self.gameController.gameView.launchGridView.reloadData()
+            self.gameController.gameView.playerGridView.reloadData()
+        })
+    }
+    
+    func playerWon(whoWon:GameState) {
+        notificationController.notificationView.message = "\(whoWon)"
+        gameController.presentViewController(notificationController, animated: true, completion: {})
+    }
+    
+    func dismissNotification() {
+        notificationController.notificationView.message = ""
+        gameController.dismissViewControllerAnimated(true, completion: {})
     }
 
     func applicationWillResignActive(application: UIApplication) {

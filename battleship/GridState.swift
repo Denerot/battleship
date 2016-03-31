@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum GridState {
+enum GridState:Int {
     case Empty
     case Ship
     case Hit

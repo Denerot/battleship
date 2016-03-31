@@ -9,14 +9,12 @@
 import UIKit
 
 class Player {
-    
-
-    
-    
     var playerGrid:[[GridState]]
     var launchHistory:[Coordinate: GridState] = [:]
     //var launchGrid:[[GridState]]
     var ships:[Ship] = [Ship]()
+    
+    var launchHistoryJSON:NSMutableDictionary = NSMutableDictionary()
     
     init() {
         // 10x10 grids with each spot's value initialized to empty
@@ -27,7 +25,6 @@ class Player {
         var ship:Ship
         var facingDirection:Direction
         var startingCoordinate:Coordinate
-        
         // A player needs 4 ships
         // counting from two so that the index can match desired ship size (2,3,4,5)
         for var i=2; i<6; i++ {
@@ -48,7 +45,6 @@ class Player {
                 playerGrid[shipCoord.x][shipCoord.y] = .Ship
             }
         }
-        printGrid()
     }
     
     func generateRandomDirection() -> Direction {

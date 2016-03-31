@@ -8,28 +8,72 @@
 
 import Foundation
 
+enum GameState:Int {
+    case Start
+    case InProgress
+    case PlayerOneWon
+    case PlayerTwoWon
+}
+
 class Game {
-    
-    enum GameState {
-        case Start
-        case InProgress
-        case PlayerOneWon
-        case PlayerTwoWon
-    }
     
     var whosTurnIsIt:WhosTurn;
     
     let playerOne:Player
     let playerTwo:Player
-    
+    var gameJSON:NSMutableDictionary = NSMutableDictionary()
+    var playerOneGridJSON:NSMutableDictionary = NSMutableDictionary()
+    var playerOneLaunchHistoryJSON:NSMutableDictionary = NSMutableDictionary()
+    var playerTwoGridJSON:NSMutableDictionary = NSMutableDictionary()
+    var playerTwoLaunchHistoryJSON:NSMutableDictionary = NSMutableDictionary()
+    let uuid:NSUUID
     var gameState:GameState
     
     init() {
+        uuid = NSUUID()
         whosTurnIsIt = .PlayerOne
         playerOne = Player()
         playerTwo = Player()
         gameState = .Start
+        saveGame()
     }
+    
+    func saveGame() {
+        gameJSON.setObject(uuid.UUIDString, forKey: "uuid")
+        gameJSON.setObject(gameState.rawValue, forKey: "gameState")
+        gameJSON.setObject(whosTurnIsIt.rawValue, forKey: "whosTurnIsIt")
+        
+        // copy player one grid to ns dictionary
+        for var x=0; x<10; x++ {
+            for var y=0; y<10; y++ {
+                let cellState:GridState = playerOne.playerGrid[x][y]
+                playerOneGridJSON.setObject(cellState.rawValue, forKey: "\(x),\(y)")
+            }
+        }
+        // copy player two grid to ns dictionary
+        for var x=0; x<10; x++ {
+            for var y=0; y<10; y++ {
+                let cellState:GridState = playerTwo.playerGrid[x][y]
+                playerTwoGridJSON.setObject(cellState.rawValue, forKey: "\(x),\(y)")
+            }
+        }
+        // copy launch histories to dictionaries
+        for (coord, cellState) in playerOne.launchHistory {
+            playerOneLaunchHistoryJSON.setObject(cellState.rawValue, forKey: "\(coord.x),\(coord.y)")
+        }
+        for (coord, cellState) in playerTwo.launchHistory {
+            playerTwoLaunchHistoryJSON.setObject(cellState.rawValue, forKey: "\(coord.x),\(coord.y)")
+        }
+        
+        gameJSON.setObject(playerOneGridJSON, forKey: "playerOneGrid")
+        gameJSON.setObject(playerTwoGridJSON, forKey: "playerTwoGrid")
+        
+        gameJSON.setObject(playerOneLaunchHistoryJSON, forKey: "playerOneLaunchHistory")
+        gameJSON.setObject(playerTwoLaunchHistoryJSON, forKey: "playerTwoLaunchHistory")
+        
+        print(gameJSON)
+    }
+    
     
     func launchMissle(location:Coordinate, whosTurn:WhosTurn) {
         if whosTurn == WhosTurn.PlayerOne {
@@ -50,6 +94,7 @@ class Game {
                             print("ship sunk")
                             for coord in ship.coords {
                                 playerTwo.playerGrid[coord.x][coord.y] = GridState.Sunk
+                                playerOne.launchHistory[coord] = GridState.Sunk
                             }
                             playerTwo.ships.removeAtIndex(index)
                             if playerTwo.ships.isEmpty {
@@ -86,6 +131,7 @@ class Game {
                             print("ship sunk!")
                             for coord in ship.coords {
                                 playerOne.playerGrid[coord.x][coord.y] = GridState.Sunk
+                                playerTwo.launchHistory[coord] = GridState.Sunk
                             }
                             playerOne.ships.removeAtIndex(index)
                             if playerOne.ships.isEmpty {

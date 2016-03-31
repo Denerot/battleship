@@ -24,5 +24,5 @@ struct Coordinate:Hashable {
 }
 // to be hashable, I guess you have to be equatable as well, http://www.swiftcoder.info/dev/codefellows/2014/8/2/how-to-implement-hashable-for-your-custom-class
 func ==(lhs: Coordinate, rhs: Coordinate) -> Bool {
-    return lhs.hashValue == rhs.hashValue
+    return lhs.x == rhs.x && lhs.y == rhs.y
 }

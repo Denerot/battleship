@@ -25,6 +25,7 @@ class GameView:UIView {
         launchGridView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
         playerGridView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
         super.init(frame: frame)
+        backgroundColor = UIColor.whiteColor()
         
         launchGridView.backgroundColor = UIColor.whiteColor()
 

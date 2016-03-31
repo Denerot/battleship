@@ -9,41 +9,35 @@
 import UIKit
 
 class GameCell:UICollectionViewCell {
-    private var label:UILabel
-    var cellState:GridState = GridState.Empty
+    var cellState:GridState = GridState.Empty {
+        didSet {
+            updateLabel()
+        }
+    }
     override init(frame: CGRect) {
-        label = UILabel(frame: frame)
         super.init(frame: frame)
-        sizeToFit()
         
         updateLabel()
-        label.font = label.font.fontWithSize(9)
         layer.borderWidth = 0.5
         layer.borderColor = UIColor.blackColor().CGColor
-        contentView.addSubview(label)
-        setNeedsDisplay()
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    override func prepareForReuse() {
-        updateLabel()
-        setNeedsDisplay()
-    }
     
     func updateLabel() {
         switch cellState {
         case .Empty:
-            label.text = ""
+            backgroundColor = UIColor.blueColor()
         case .Hit:
-            label.text = "Hit"
+            backgroundColor = UIColor.orangeColor()
         case .Miss:
-            label.text = "Miss"
+            backgroundColor = UIColor.yellowColor()
         case .Ship:
-            label.text = "Ship"
+            backgroundColor = UIColor.grayColor()
         case .Sunk:
-            label.text = "Sunk"
+            backgroundColor = UIColor.redColor()
         }
     }
 }

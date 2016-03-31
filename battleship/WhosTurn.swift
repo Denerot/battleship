@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum WhosTurn {
+enum WhosTurn:Int {
     case PlayerOne
     case PlayerTwo
 }
