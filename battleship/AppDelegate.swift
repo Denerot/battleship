@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
         window = UIWindow()
         gameController.delegate = self
         notificationController.delegate = self
-        window?.rootViewController = gameController
+        window?.rootViewController = gameListController
         window?.makeKeyAndVisible()
         
         return true

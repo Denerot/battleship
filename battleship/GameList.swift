@@ -10,8 +10,7 @@ import Foundation
 
 class GameList {
     
-    var gameList:[Game] = []
-    var gameListDictionary:NSMutableDictionary = NSMutableDictionary()
+    var gameList:NSMutableArray = NSMutableArray()
     weak var delegate: NSURLSessionDataDelegate? = nil
     
     init() {
@@ -44,12 +43,13 @@ class GameList {
     
     func populateGamesList(gamesData:NSData) {
         do {
-            try print(NSJSONSerialization.JSONObjectWithData(gamesData, options: NSJSONReadingOptions.MutableContainers) as? [String:AnyObject])
+            gameList = try NSJSONSerialization.JSONObjectWithData(gamesData, options: [NSJSONReadingOptions.MutableContainers, NSJSONReadingOptions.AllowFragments]) as! NSMutableArray
         }
         catch {
             print("json error: \(error)")
+            return
         }
-        //print(gameListDictionary)
+        //print(gameList[0]["id"]!!.description)
     }
     
     

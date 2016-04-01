@@ -8,15 +8,21 @@
 
 import UIKit
 
-class GameListController:NSObject, NSURLSessionDataDelegate, UITableViewDelegate, UITableViewDataSource {
+class GameListController:UIViewController, NSURLSessionDataDelegate, UITableViewDelegate, UITableViewDataSource {
     var gameList:GameList
+    let gameListView:GameListView
     
-    override init() {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         gameList = GameList()
-        super.init()
+        gameListView = GameListView()
+        super.init(nibName: nil, bundle: nil)
         
         gameList.delegate = self
         gameList.requestGamesList()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveResponse response: NSURLResponse, completionHandler: (NSURLSessionResponseDisposition) -> Void) {
         completionHandler(NSURLSessionResponseDisposition.Allow)
@@ -28,8 +34,9 @@ class GameListController:NSObject, NSURLSessionDataDelegate, UITableViewDelegate
         //
     }
     func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
-        let dataString = NSString(data: data, encoding: NSUTF8StringEncoding)
         //print(dataString)
+        let string1 = NSString(data: data, encoding: NSUTF8StringEncoding)
+        print(string1)
         gameList.populateGamesList(data)
         
     }
@@ -38,10 +45,27 @@ class GameListController:NSObject, NSURLSessionDataDelegate, UITableViewDelegate
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //
-        return 2
+        return gameList.gameList.count
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //
-        return UITableViewCell()
+        let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        cell.textLabel!.text = "test"
+        return cell
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        gameListView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        
+        gameListView.dataSource = self
+        gameListView.delegate = self
+        
+        print("view loaded")
+    }
+    override func loadView() {
+        super.loadView()
+        print("loading view")
+        view = gameListView
     }
 }
