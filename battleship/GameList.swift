@@ -26,9 +26,8 @@ class GameList {
     func updateGameList(gameListData:NSData) {
         let dataString = NSString(data: gameListData, encoding: NSUTF8StringEncoding)
         print(dataString)
-        
         do {
-            print( try NSJSONSerialization.JSONObjectWithData(gameListData, options: []))
+            print(try! NSJSONSerialization.JSONObjectWithData(gameListData, options: NSJSONReadingOptions()))
         }
         catch {
             print("update game list error \(error)")

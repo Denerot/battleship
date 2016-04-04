@@ -11,23 +11,55 @@ import Foundation
 class Network {
     let scheme:String = "http"
     let host:String = "battleship.pixio.com"
-    let gameListPath:String = "/api/games"
+    let gameListPath:String = "/api/v2/lobby"
     weak var delegate: NSURLSessionDataDelegate? = nil
     
     init() {
         
     }
     
-    func requestGameList() {
-        let gameListComponents:NSURLComponents = NSURLComponents()
-        gameListComponents.scheme = scheme
-        gameListComponents.host = host
-        gameListComponents.path = gameListPath
-        let gamesListUrl:NSURL = gameListComponents.URL!
-        let request = NSURLRequest(URL: gamesListUrl)
-        let config = NSURLSessionConfiguration.defaultSessionConfiguration()
-        let session = NSURLSession(configuration: config, delegate: delegate, delegateQueue: nil)
-        let task = session.dataTaskWithRequest(request)
-        task.resume()
+//    func requestGameList() {
+//        let gameListComponents:NSURLComponents = NSURLComponents()
+//        gameListComponents.scheme = scheme
+//        gameListComponents.host = host
+//        gameListComponents.path = gameListPath
+//        let gamesListUrl:NSURL = gameListComponents.URL!
+//        let request = NSURLRequest(URL: gamesListUrl)
+//        let config = NSURLSessionConfiguration.defaultSessionConfiguration()
+//        let session = NSURLSession(configuration: config, delegate: delegate, delegateQueue: nil)
+//        let task = session.dataTaskWithRequest(request)
+//        task.resume()
+//    }
+    
+    func requestGameList(delegate: NetworkDelegate)
+    {
+        let url: NSURL = NSURL(string: "http://battleship.pixio.com/api/v2/lobby")!
+        let request: NSMutableURLRequest = NSMutableURLRequest(URL: url)
+        
+        
+//        request.HTTPMethod = "POST"
+        
+       // request.HTTPBody = NSJSONSerialization.dataWithJSONObject(myArray, options: NSJSONWritingOptions())
+        
+        let queue: NSOperationQueue = NSOperationQueue()
+        
+        NSURLConnection.sendAsynchronousRequest(request, queue: queue, completionHandler: {
+            (response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in NSOperationQueue.mainQueue().addOperationWithBlock(
+                {
+              
+                    if(data == nil)
+                    {
+                        print("No Data")
+                    }
+                    else
+                    {
+                        print(try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions()))
+                        
+                        delegate.updateGameList(data!)
+                    }
+            
+            
+            })
+        })
     }
 }
