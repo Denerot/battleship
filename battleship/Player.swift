@@ -30,14 +30,10 @@ class Player {
         for var i=2; i<6; i++ {
             startingCoordinate = generateRandomStartingPoint()
             facingDirection = generateRandomDirection()
-            print(startingCoordinate)
-            print(facingDirection)
             // Try another starting point and direction until there is no overlap
             while shipOverlaps(startingCoordinate, size: i, direction: facingDirection) {
                 startingCoordinate = generateRandomStartingPoint()
                 facingDirection = generateRandomDirection()
-                print(startingCoordinate)
-                print(facingDirection)
             }
             ship = Ship(size: Int(i), facing: facingDirection, startingCoordinate: startingCoordinate)
             ships.append(ship)

@@ -9,22 +9,30 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, NotificationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, NotificationDelegate, NetworkDelegate {
 
     var window: UIWindow?
     var notificationController:NotificationController = NotificationController()
     var gameController:GameViewController = GameViewController()
     var gameListController:GameListController = GameListController()
+    var networkController:NetworkController = NetworkController()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow()
         gameController.delegate = self
         notificationController.delegate = self
+        networkController.networkDelegate = self
         window?.rootViewController = gameListController
+        //window?.rootViewController = gameController
         window?.makeKeyAndVisible()
         
         return true
+    }
+    
+    func updateGameList(gameListData: NSData) {
+        gameListController.gameList.updateGameList(gameListData)
+        gameListController.gameListView.reloadData()
     }
     
     func playerTurn(whosTurn:WhosTurn) {

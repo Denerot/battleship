@@ -79,7 +79,6 @@ class Game {
         gameJSON.setObject(playerOneLaunchHistoryJSON, forKey: "playerOneLaunchHistory")
         gameJSON.setObject(playerTwoLaunchHistoryJSON, forKey: "playerTwoLaunchHistory")
         
-        print(gameJSON)
     }
     
     
