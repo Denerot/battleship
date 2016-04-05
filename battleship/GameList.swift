@@ -25,6 +25,7 @@ class GameList {
     
     func updateGameList(gameListData:NSData) {
         gameList = try! NSJSONSerialization.JSONObjectWithData(gameListData, options: NSJSONReadingOptions()) as! NSArray
+        gameList = gameList.reverse()
     }
     
     

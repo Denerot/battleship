@@ -8,15 +8,15 @@
 
 import Foundation
 
-protocol NetworkDelegate: class {
-    func updateGameList(gameListData:NSData)
+protocol NetworkControllerDelegate: class {
+    func updateGameListArray(gameListData:NSData)
+    func presentGameDetailController(gameData:NSDictionary)
 }
-
-
 
 class NetworkController:NetworkDelegate {
     let network:Network = Network()
-    weak var gameListDelegate:GameListDelegate? = nil
+    //weak var gameListDelegate:GameListDelegate? = nil
+    weak var delegate:NetworkControllerDelegate? = nil
     
     init() {
         network.delegate = self
@@ -24,6 +24,11 @@ class NetworkController:NetworkDelegate {
     }
     
     func updateGameList(gameListData: NSData) {
-        gameListDelegate?.updateGameList(gameListData)
+        delegate?.updateGameListArray(gameListData)
+    }
+    
+    func gameDetailRecieved(gameData:NSData) {
+        let gameDictionary:NSDictionary = try! NSJSONSerialization.JSONObjectWithData(gameData, options: NSJSONReadingOptions()) as! NSDictionary
+        delegate?.presentGameDetailController(gameDictionary)
     }
 }

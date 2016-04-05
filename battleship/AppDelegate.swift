@@ -9,22 +9,33 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, NotificationDelegate, GameListDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, NotificationDelegate, GameListControllerDelegate, NetworkControllerDelegate {
 
     var window: UIWindow?
     var notificationController:NotificationController = NotificationController()
     var gameController:GameViewController = GameViewController()
     var gameListController:GameListController = GameListController()
     var networkController:NetworkController = NetworkController()
+    var gameDetailViewController:GameDetailViewController = GameDetailViewController()
+    var gameListNavigationController:UINavigationController
 
+    override init() {
+        gameListNavigationController = UINavigationController(rootViewController: gameListController)
+        super.init()
+    }
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow()
         gameController.delegate = self
+        gameListController.delegate = self
         notificationController.delegate = self
-        networkController.gameListDelegate = self
+        networkController.delegate = self
         gameListController.title = "Battleship Lobby"
-        let gameListNavigationController:UINavigationController = UINavigationController(rootViewController: gameListController)
+        
+        // get initial game list
+        networkController.network.requestGameList()
+        
         window?.rootViewController = gameListNavigationController
         
         //window?.rootViewController = gameController
@@ -33,9 +44,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
         return true
     }
     
-    func updateGameList(gameListData: NSData) {
+    func updateGameListArray(gameListData: NSData) {
         gameListController.gameList.updateGameList(gameListData)
         gameListController.gameListView.reloadData()
+    }
+
+    func presentGameDetailController(gameData: NSDictionary) {
+        print("non playable game selected")
+        gameDetailViewController.title = gameData["name"] as! String
+        gameDetailViewController.gameDetailView.playerOneLabel.text = "Player one: \(gameData["player1"] as! String)"
+        gameDetailViewController.gameDetailView.playerTwoLabel.text = "Player two: \(gameData["player2"] as! String)"
+        gameDetailViewController.gameDetailView.winnerLabel.text = "Winner: \(gameData["winner"] as! String)"
+        gameDetailViewController.gameDetailView.missilesLaunchedLabel.text = "Missiles Launched: \(String(gameData["missilesLaunched"] as! Int))"
+        gameListNavigationController.pushViewController(gameDetailViewController, animated: true)
+    }
+    
+    func nonPlayableGameSelected(uuid: String) {
+        networkController.network.requestGameDetail(uuid)
     }
     
     func playerTurn(whosTurn:WhosTurn) {

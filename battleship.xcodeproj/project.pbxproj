@@ -19,6 +19,8 @@
 		987D4AE11C9E4974007C4F58 /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987D4AE01C9E4974007C4F58 /* Coordinate.swift */; };
 		987D4AE31C9E4A0E007C4F58 /* ShipCoordState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987D4AE21C9E4A0E007C4F58 /* ShipCoordState.swift */; };
 		98969C0C1CA5B9A10049498A /* GameList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98969C0B1CA5B9A10049498A /* GameList.swift */; };
+		989B05781CB4611800BBC268 /* GameDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989B05771CB4611800BBC268 /* GameDetailView.swift */; };
+		989B057A1CB466FC00BBC268 /* GameDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989B05791CB466FC00BBC268 /* GameDetailViewController.swift */; };
 		98AF8D081CA0B50800B80F53 /* WhosTurn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AF8D071CA0B50800B80F53 /* WhosTurn.swift */; };
 		98AF8D0A1CA0B5F000B80F53 /* GridState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AF8D091CA0B5F000B80F53 /* GridState.swift */; };
 		98AF8D0C1CA0B7A800B80F53 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 98AF8D0B1CA0B7A800B80F53 /* Default-568h@2x.png */; };
@@ -45,6 +47,8 @@
 		987D4AE01C9E4974007C4F58 /* Coordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		987D4AE21C9E4A0E007C4F58 /* ShipCoordState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShipCoordState.swift; sourceTree = "<group>"; };
 		98969C0B1CA5B9A10049498A /* GameList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameList.swift; sourceTree = "<group>"; };
+		989B05771CB4611800BBC268 /* GameDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailView.swift; sourceTree = "<group>"; };
+		989B05791CB466FC00BBC268 /* GameDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameDetailViewController.swift; sourceTree = "<group>"; };
 		98AF8D071CA0B50800B80F53 /* WhosTurn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhosTurn.swift; sourceTree = "<group>"; };
 		98AF8D091CA0B5F000B80F53 /* GridState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridState.swift; sourceTree = "<group>"; };
 		98AF8D0B1CA0B7A800B80F53 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -78,6 +82,7 @@
 				9872707A1CA5042E00D09DAF /* NotificationController.swift */,
 				983F38811CACBD4700D23BB7 /* GameListController.swift */,
 				987924581CB1B72E00BAC3B2 /* NetworkController.swift */,
+				989B05791CB466FC00BBC268 /* GameDetailViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -90,6 +95,7 @@
 				9872707C1CA50BDE00D09DAF /* NotificationView.swift */,
 				98109D1C1CAC522600BBE938 /* GameListView.swift */,
 				981BE45F1CB3D3F900010A79 /* GameListCell.swift */,
+				989B05771CB4611800BBC268 /* GameDetailView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -221,6 +227,7 @@
 				F221B53D1C98B11300379E55 /* ViewController.swift in Sources */,
 				987D4AE31C9E4A0E007C4F58 /* ShipCoordState.swift in Sources */,
 				F221B5501C98B1CB00379E55 /* Game.swift in Sources */,
+				989B05781CB4611800BBC268 /* GameDetailView.swift in Sources */,
 				F221B53B1C98B11300379E55 /* AppDelegate.swift in Sources */,
 				9879245B1CB1B79300BAC3B2 /* Network.swift in Sources */,
 				983F38821CACBD4700D23BB7 /* GameListController.swift in Sources */,
@@ -229,6 +236,7 @@
 				98109D1D1CAC522600BBE938 /* GameListView.swift in Sources */,
 				987D4ADD1C9E17F0007C4F58 /* Ship.swift in Sources */,
 				981BE4601CB3D3F900010A79 /* GameListCell.swift in Sources */,
+				989B057A1CB466FC00BBC268 /* GameDetailViewController.swift in Sources */,
 				987D4ADF1C9E494B007C4F58 /* Direction.swift in Sources */,
 				98AF8D081CA0B50800B80F53 /* WhosTurn.swift in Sources */,
 				9872707D1CA50BDE00D09DAF /* NotificationView.swift in Sources */,

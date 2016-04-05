@@ -8,14 +8,14 @@
 
 import UIKit
 
-protocol GameListDelegate: class {
-    func updateGameList(gameListData:NSData)
-    func getGameDetail(uuid:String)
+protocol GameListControllerDelegate: class {
+    func nonPlayableGameSelected(uuid:String)
 }
 
 class GameListController:UIViewController, NSURLSessionDataDelegate, UITableViewDelegate, UITableViewDataSource {
     var gameList:GameList
     let gameListView:GameListView
+    weak var delegate:GameListControllerDelegate? = nil
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         gameList = GameList()
@@ -39,8 +39,13 @@ class GameListController:UIViewController, NSURLSessionDataDelegate, UITableView
             
         return cell
     }
-    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        <#code#>
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let gameStatus:String = gameList.gameList[indexPath.item]["status"] as! String
+        
+        if gameStatus == "PLAYING" || gameStatus == "DONE" {
+            delegate?.nonPlayableGameSelected(gameList.gameList[indexPath.item]["id"] as! String)
+        }
+        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
