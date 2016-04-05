@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		98109D1D1CAC522600BBE938 /* GameListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98109D1C1CAC522600BBE938 /* GameListView.swift */; };
+		981BE4601CB3D3F900010A79 /* GameListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981BE45F1CB3D3F900010A79 /* GameListCell.swift */; };
 		983F38821CACBD4700D23BB7 /* GameListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983F38811CACBD4700D23BB7 /* GameListController.swift */; };
 		9872707B1CA5042E00D09DAF /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9872707A1CA5042E00D09DAF /* NotificationController.swift */; };
 		9872707D1CA50BDE00D09DAF /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9872707C1CA50BDE00D09DAF /* NotificationView.swift */; };
@@ -33,6 +34,7 @@
 
 /* Begin PBXFileReference section */
 		98109D1C1CAC522600BBE938 /* GameListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameListView.swift; sourceTree = "<group>"; };
+		981BE45F1CB3D3F900010A79 /* GameListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameListCell.swift; sourceTree = "<group>"; };
 		983F38811CACBD4700D23BB7 /* GameListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameListController.swift; sourceTree = "<group>"; };
 		9872707A1CA5042E00D09DAF /* NotificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		9872707C1CA50BDE00D09DAF /* NotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				98AF8D0D1CA0F45900B80F53 /* GameCell.swift */,
 				9872707C1CA50BDE00D09DAF /* NotificationView.swift */,
 				98109D1C1CAC522600BBE938 /* GameListView.swift */,
+				981BE45F1CB3D3F900010A79 /* GameListCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -225,6 +228,7 @@
 				9872707B1CA5042E00D09DAF /* NotificationController.swift in Sources */,
 				98109D1D1CAC522600BBE938 /* GameListView.swift in Sources */,
 				987D4ADD1C9E17F0007C4F58 /* Ship.swift in Sources */,
+				981BE4601CB3D3F900010A79 /* GameListCell.swift in Sources */,
 				987D4ADF1C9E494B007C4F58 /* Direction.swift in Sources */,
 				98AF8D081CA0B50800B80F53 /* WhosTurn.swift in Sources */,
 				9872707D1CA50BDE00D09DAF /* NotificationView.swift in Sources */,

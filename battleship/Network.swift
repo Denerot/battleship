@@ -12,8 +12,7 @@ class Network {
     let scheme:String = "http"
     let host:String = "battleship.pixio.com"
     let gameListPath:String = "/api/v2/lobby"
-    weak var delegate: NSURLSessionDataDelegate? = nil
-    
+    weak var delegate:NetworkDelegate? = nil
     init() {
         
     }
@@ -31,7 +30,7 @@ class Network {
 //        task.resume()
 //    }
     
-    func requestGameList(delegate: NetworkDelegate)
+    func requestGameList()
     {
         let url: NSURL = NSURL(string: "http://battleship.pixio.com/api/v2/lobby")!
         let request: NSMutableURLRequest = NSMutableURLRequest(URL: url)
@@ -46,19 +45,15 @@ class Network {
         NSURLConnection.sendAsynchronousRequest(request, queue: queue, completionHandler: {
             (response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in NSOperationQueue.mainQueue().addOperationWithBlock(
                 {
-              
                     if(data == nil)
                     {
                         print("No Data")
                     }
                     else
                     {
-                        print(try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions()))
-                        
-                        delegate.updateGameList(data!)
+                        self.delegate!.updateGameList(data!)
+                        //try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions()))
                     }
-            
-            
             })
         })
     }

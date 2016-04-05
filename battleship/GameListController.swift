@@ -23,17 +23,21 @@ class GameListController:UIViewController, NSURLSessionDataDelegate, UITableView
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return gameList.gameList.count
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-        cell.textLabel!.text = "test"
+        let cell: GameListCell = tableView.dequeueReusableCellWithIdentifier("GameListCell", forIndexPath: indexPath) as! GameListCell
+        
+        cell.textLabel!.text = gameList.gameList[indexPath.item]["name"] as! String
+
+        cell.detailTextLabel!.text = gameList.gameList[indexPath.item]["status"] as! String
+            
         return cell
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        gameListView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        gameListView.registerClass(GameListCell.self, forCellReuseIdentifier: "GameListCell")
         
         gameListView.dataSource = self
         gameListView.delegate = self

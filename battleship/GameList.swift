@@ -10,7 +10,7 @@ import Foundation
 
 class GameList {
     
-    //var gameList:NSArray = NSArray()
+    var gameList:NSArray = NSArray()
     
     init() {
     }
@@ -24,15 +24,7 @@ class GameList {
     }
     
     func updateGameList(gameListData:NSData) {
-        let dataString = NSString(data: gameListData, encoding: NSUTF8StringEncoding)
-        print(dataString)
-        do {
-            print(try! NSJSONSerialization.JSONObjectWithData(gameListData, options: NSJSONReadingOptions()))
-        }
-        catch {
-            print("update game list error \(error)")
-        }
-
+        gameList = try! NSJSONSerialization.JSONObjectWithData(gameListData, options: NSJSONReadingOptions()) as! NSArray
     }
     
     

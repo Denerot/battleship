@@ -12,31 +12,20 @@ protocol NetworkDelegate: class {
     func updateGameList(gameListData:NSData)
 }
 
-class NetworkController:NSObject,NSURLSessionDataDelegate {
+protocol GameListDelegate: class {
+    func updateGameList(gameListData:NSData)
+}
+
+class NetworkController:NetworkDelegate {
     let network:Network = Network()
-    weak var networkDelegate:NetworkDelegate? = nil
+    weak var gameListDelegate:GameListDelegate? = nil
     
-    override init() {
-        super.init()
+    init() {
         network.delegate = self
         network.requestGameList()
     }
     
-    func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveResponse response: NSURLResponse, completionHandler: (NSURLSessionResponseDisposition) -> Void) {
-        completionHandler(NSURLSessionResponseDisposition.Allow)
-        dataTask.resume()
-    }
-    func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didBecomeDownloadTask downloadTask: NSURLSessionDownloadTask) {
-        //
-    }
-    func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didBecomeStreamTask streamTask: NSURLSessionStreamTask) {
-        //
-    }
-    func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
-        networkDelegate?.updateGameList(data)
-        dataTask.resume()
-    }
-    func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, willCacheResponse proposedResponse: NSCachedURLResponse, completionHandler: (NSCachedURLResponse?) -> Void) {
-        //
+    func updateGameList(gameListData: NSData) {
+        gameListDelegate?.updateGameList(gameListData)
     }
 }

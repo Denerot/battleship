@@ -9,7 +9,7 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, NotificationDelegate, NetworkDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, NotificationDelegate, GameListDelegate {
 
     var window: UIWindow?
     var notificationController:NotificationController = NotificationController()
@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
         window = UIWindow()
         gameController.delegate = self
         notificationController.delegate = self
-        networkController.networkDelegate = self
+        networkController.gameListDelegate = self
         window?.rootViewController = gameListController
         //window?.rootViewController = gameController
         window?.makeKeyAndVisible()
