@@ -12,9 +12,7 @@ protocol NetworkDelegate: class {
     func updateGameList(gameListData:NSData)
 }
 
-protocol GameListDelegate: class {
-    func updateGameList(gameListData:NSData)
-}
+
 
 class NetworkController:NetworkDelegate {
     let network:Network = Network()

@@ -23,7 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
         gameController.delegate = self
         notificationController.delegate = self
         networkController.gameListDelegate = self
-        window?.rootViewController = gameListController
+        gameListController.title = "Battleship Lobby"
+        let gameListNavigationController:UINavigationController = UINavigationController(rootViewController: gameListController)
+        window?.rootViewController = gameListNavigationController
+        
         //window?.rootViewController = gameController
         window?.makeKeyAndVisible()
         

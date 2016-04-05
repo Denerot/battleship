@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol GameListDelegate: class {
+    func updateGameList(gameListData:NSData)
+    func getGameDetail(uuid:String)
+}
+
 class GameListController:UIViewController, NSURLSessionDataDelegate, UITableViewDelegate, UITableViewDataSource {
     var gameList:GameList
     let gameListView:GameListView
@@ -33,6 +38,9 @@ class GameListController:UIViewController, NSURLSessionDataDelegate, UITableView
         cell.detailTextLabel!.text = gameList.gameList[indexPath.item]["status"] as! String
             
         return cell
+    }
+    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+        <#code#>
     }
     override func viewDidLoad() {
         super.viewDidLoad()
