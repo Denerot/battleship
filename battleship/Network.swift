@@ -20,6 +20,7 @@ class Network {
     let host:String = "battleship.pixio.com"
     let gameListPath:String = "/api/v2/lobby"
     weak var delegate:NetworkDelegate? = nil
+    weak var appDelegate:AppDelegate? = nil
     init() {
         
     }
@@ -92,6 +93,37 @@ class Network {
                     else
                     {
                         self.delegate!.gameJoined(data!)
+                        //try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions()))
+                    }
+                }
+            )
+        })
+    }
+    
+    func requestPlayerBoard(gameId:NSUUID, playerId:NSUUID) {
+        let url: NSURL = NSURL(string: "http://battleship.pixio.com/api/games/\(gameId)/board")!
+        let request: NSMutableURLRequest = NSMutableURLRequest(URL: url)
+        
+        request.HTTPMethod = "POST"
+        
+        let playerIdDictionary:NSDictionary = ["playerId" : playerId]
+        request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(playerIdDictionary, options: NSJSONWritingOptions())
+        
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let queue: NSOperationQueue = NSOperationQueue()
+        
+        NSURLConnection.sendAsynchronousRequest(request, queue: queue, completionHandler: {
+            (response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in NSOperationQueue.mainQueue().addOperationWithBlock(
+                {
+                    if(data == nil)
+                    {
+                        print("No Data")
+                    }
+                    else
+                    {
+                        let playerGrids:NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions()) as! NSDictionary
+                        self.appDelegate!.updateGameBoard(gameId, playerId: playerId, playerGrids: playerGrids)
                         //try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions()))
                     }
                 }

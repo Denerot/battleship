@@ -28,14 +28,23 @@ class Game {
     let playerOne:Player
     let playerTwo:Player
     var gameJSON:NSMutableDictionary = NSMutableDictionary()
+    var gameId:NSUUID
     /*let uuid:NSUUID
     var gameState:GameState
     var name:String = "shaboopi"
     var status:GameStatus = .WAITING*/
     
-    init() {
+    init(gameId:NSUUID) {
+        self.gameId = gameId
         playerOne = Player()
         playerTwo = Player()
         whosTurnIsIt = WhosTurn.PlayerOne
+    }
+    
+    init(gameId:NSUUID, whosTurn:WhosTurn) {
+        self.gameId = gameId
+        playerOne = Player()
+        playerTwo = Player()
+        whosTurnIsIt = whosTurn
     }
 }

@@ -11,6 +11,8 @@ import Foundation
 protocol NetworkControllerDelegate: class {
     func updateGameListArray(gameListData:NSData)
     func presentGameDetailController(gameData:NSDictionary)
+    func openNewGame(gameDictionary:NSDictionary)
+    func openExistingGame(playerIdDictionary:NSDictionary)
 }
 
 class NetworkController:NetworkDelegate {
@@ -35,6 +37,7 @@ class NetworkController:NetworkDelegate {
     func gameJoined(playerId: NSData) {
         let playerIdDictionary:NSDictionary = try! NSJSONSerialization.JSONObjectWithData(playerId, options: NSJSONReadingOptions()) as! NSDictionary
         print("game joined player id: \(playerIdDictionary["playerId"])")
+        delegate?.openExistingGame(playerIdDictionary)
     }
     
     func gameCreated(gameData: NSData) {
@@ -55,6 +58,6 @@ class NetworkController:NetworkDelegate {
             fileHandle!.writeData(gameData)
             fileHandle!.closeFile()
         }
-
+        delegate?.openNewGame(gameDictionary)
     }
 }

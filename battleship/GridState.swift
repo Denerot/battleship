@@ -9,9 +9,8 @@
 import Foundation
 
 enum GridState:Int {
-    case Empty
-    case Ship
-    case Hit
-    case Miss
-    case Sunk
+    case HIT
+    case MISS
+    case SHIP
+    case NONE
 }

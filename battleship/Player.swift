@@ -9,11 +9,11 @@
 import UIKit
 
 class Player {
-    var playerId:String = ""
+    var playerId:NSUUID
     var playerName:String = ""
     var playerBoard:NSDictionary = NSDictionary()
     
-    init() {
-        
+    init(playerId:NSUUID) {
+        self.playerId = playerId
     }
 }

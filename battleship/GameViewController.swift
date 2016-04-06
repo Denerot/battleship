@@ -34,8 +34,26 @@ class GameViewController:UIViewController, UICollectionViewDataSource, UICollect
             cell.layer.borderColor = UIColor.blackColor().CGColor
             
             if(game.whosTurnIsIt == WhosTurn.PlayerOne) {
+                if game.playerOne.playerBoard["opponentBoard"]![indexPath.item] as! GridState == GridState.HIT {
+                    cell.cellState = GridState.HIT
+                }
+                else if game.playerOne.playerBoard["opponentBoard"]![indexPath.item] as! GridState == GridState.MISS {
+                    cell.cellState = GridState.MISS
+                }
+                else {
+                    cell.cellState = GridState.NONE
+                }
             }
             else {
+                if game.playerTwo.playerBoard["opponentBoard"]![indexPath.item] as! GridState == GridState.HIT {
+                    cell.cellState = GridState.HIT
+                }
+                else if game.playerTwo.playerBoard["opponentBoard"]![indexPath.item] as! GridState == GridState.MISS {
+                    cell.cellState = GridState.MISS
+                }
+                else {
+                    cell.cellState = GridState.NONE
+                }
             }
             return cell
         }
@@ -44,8 +62,32 @@ class GameViewController:UIViewController, UICollectionViewDataSource, UICollect
             cell.layer.borderColor = UIColor.whiteColor().CGColor
             
             if(game.whosTurnIsIt == WhosTurn.PlayerOne) {
+                if game.playerOne.playerGrid[indexPath.row][indexPath.section] == GridState.Ship {
+                    cell.cellState = GridState.Ship
+                }
+                else if game.playerOne.playerGrid[indexPath.row][indexPath.section] == GridState.Hit {
+                    cell.cellState = GridState.Hit
+                }
+                else if game.playerOne.playerGrid[indexPath.row][indexPath.section] == GridState.Sunk {
+                    cell.cellState = GridState.Sunk
+                }
+                else {
+                    cell.cellState = GridState.Empty
+                }
             }
             else {
+                if game.playerTwo.playerGrid[indexPath.row][indexPath.section] == GridState.Ship {
+                    cell.cellState = GridState.Ship
+                }
+                else if game.playerTwo.playerGrid[indexPath.row][indexPath.section] == GridState.Hit {
+                    cell.cellState = GridState.Hit
+                }
+                else if game.playerTwo.playerGrid[indexPath.row][indexPath.section] == GridState.Sunk {
+                    cell.cellState = GridState.Sunk
+                }
+                else {
+                    cell.cellState = GridState.Empty
+                }
             }
             return cell
         }

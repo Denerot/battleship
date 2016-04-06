@@ -34,15 +34,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
         gameListController.delegate = self
         notificationController.delegate = self
         networkController.delegate = self
+        networkController.network.appDelegate = self
         joinGameViewController.delegate = self
         addGameViewController.addGameView.delegate = self
         gameListController.title = "Lobby"
         
         // get initial game list
         networkController.network.requestGameList()
-
-        
-
         
         window?.rootViewController = gameListNavigationController
         
@@ -62,8 +60,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
     }
     
     func createGame() {
-        print(addGameViewController.addGameView.gameNameInput.text!)
         networkController.network.createGame(addGameViewController.addGameView.gameNameInput.text!, playerName: addGameViewController.addGameView.playerNameInput.text!)
+    }
+    
+    func openNewGame(gameDictionary:NSDictionary) {
+        //gameListNavigationController.pushViewController(gameController, animated: true)
+        window?.rootViewController = gameController
+        gameController.game = Game(gameId: gameDictionary["gameId"] as! NSUUID, whosTurn: WhosTurn.PlayerOne)
+        gameController.game.playerOne.playerId = gameDictionary["playerId"] as! NSUUID
+        networkController.network.requestPlayerBoard(gameController.game.gameId, playerId: gameController.game.playerOne.playerId)
+    }
+    
+    func openExistingGame(playerIdDictionary: NSDictionary) {
+        //gameListNavigationController.pushViewController(gameController, animated: true)
+        window?.rootViewController = gameController
     }
 
     func presentGameDetailController(gameData: NSDictionary) {
@@ -85,9 +95,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
         
     }
     
-    
     func joinGame(playerName:String, gameId:String) {
         networkController.network.joinGame(playerName, gameId: gameId)
+    }
+    
+    func updateGameBoard(gameId:NSUUID, playerId:NSUUID, playerGrids:NSDictionary) {
+        if gameController.game.playerOne.playerId == playerId {
+            gameController.game.playerOne.playerBoard = playerGrids
+        }
+        else if gameController.game.playerTwo.playerId == playerId {
+            gameController.game.playerTwo.playerBoard = playerGrids
+            gameController.gameView.launchGridView.reloadData()
+            gameController.gameView.playerGridView.reloadData()
+        }
+        else {
+            print("ERROR playerid for playerboard doesn't match either player in game")
+        }
     }
     
     func playerTurn(whosTurn:WhosTurn) {
