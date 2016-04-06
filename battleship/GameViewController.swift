@@ -34,33 +34,8 @@ class GameViewController:UIViewController, UICollectionViewDataSource, UICollect
             cell.layer.borderColor = UIColor.blackColor().CGColor
             
             if(game.whosTurnIsIt == WhosTurn.PlayerOne) {
-                if game.playerOne.launchHistory[Coordinate(x: indexPath.row, y: indexPath.section)] == GridState.Sunk {
-                    cell.cellState = GridState.Sunk
-                }
-                else if game.playerOne.launchHistory[Coordinate(x: indexPath.row, y: indexPath.section)] == GridState.Hit {
-                    cell.cellState = GridState.Hit
-                }
-                else if game.playerOne.launchHistory[Coordinate(x: indexPath.row, y: indexPath.section)] == GridState.Miss {
-                    cell.cellState = GridState.Miss
-                }
-                else {
-                    cell.cellState = GridState.Empty
-                }
             }
             else {
-                
-                if game.playerTwo.launchHistory[Coordinate(x: indexPath.row, y: indexPath.section)] == GridState.Sunk {
-                    cell.cellState = GridState.Sunk
-                }
-                else if game.playerTwo.launchHistory[Coordinate(x: indexPath.row, y: indexPath.section)] == GridState.Hit {
-                    cell.cellState = GridState.Hit
-                }
-                else if game.playerTwo.launchHistory[Coordinate(x: indexPath.row, y: indexPath.section)] == GridState.Miss {
-                    cell.cellState = GridState.Miss
-                }
-                else {
-                    cell.cellState = GridState.Empty
-                }
             }
             return cell
         }
@@ -69,32 +44,8 @@ class GameViewController:UIViewController, UICollectionViewDataSource, UICollect
             cell.layer.borderColor = UIColor.whiteColor().CGColor
             
             if(game.whosTurnIsIt == WhosTurn.PlayerOne) {
-                if game.playerOne.playerGrid[indexPath.row][indexPath.section] == GridState.Ship {
-                    cell.cellState = GridState.Ship
-                }
-                else if game.playerOne.playerGrid[indexPath.row][indexPath.section] == GridState.Hit {
-                    cell.cellState = GridState.Hit
-                }
-                else if game.playerOne.playerGrid[indexPath.row][indexPath.section] == GridState.Sunk {
-                    cell.cellState = GridState.Sunk
-                }
-                else {
-                    cell.cellState = GridState.Empty
-                }
             }
             else {
-                if game.playerTwo.playerGrid[indexPath.row][indexPath.section] == GridState.Ship {
-                    cell.cellState = GridState.Ship
-                }
-                else if game.playerTwo.playerGrid[indexPath.row][indexPath.section] == GridState.Hit {
-                    cell.cellState = GridState.Hit
-                }
-                else if game.playerTwo.playerGrid[indexPath.row][indexPath.section] == GridState.Sunk {
-                    cell.cellState = GridState.Sunk
-                }
-                else {
-                    cell.cellState = GridState.Empty
-                }
             }
             return cell
         }
@@ -103,7 +54,7 @@ class GameViewController:UIViewController, UICollectionViewDataSource, UICollect
     /* Since this controller is only a delegate for the launch grid, we don't need to check which collectionView
      * is calling this, it's guaranteed to be the launchGrid */
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        print("firing missile to \(indexPath.row),\(indexPath.section)")
+        /*print("firing missile to \(indexPath.row),\(indexPath.section)")
         game.launchMissle(Coordinate(x: indexPath.row, y: indexPath.section), whosTurn: game.whosTurnIsIt)
         print("Other person's turn, no peeking!")
         if(game.gameState == GameState.PlayerOneWon) {
@@ -114,7 +65,7 @@ class GameViewController:UIViewController, UICollectionViewDataSource, UICollect
         }
         else {
             delegate?.playerTurn(game.whosTurnIsIt)
-        }
+        }*/
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

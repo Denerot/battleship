@@ -9,7 +9,7 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, NotificationDelegate, GameListControllerDelegate, NetworkControllerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, NotificationDelegate, GameListControllerDelegate, NetworkControllerDelegate, JoinGameViewControllerDelegate, AddGameViewDelegate {
 
     var window: UIWindow?
     var notificationController:NotificationController = NotificationController()
@@ -17,10 +17,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
     var gameListController:GameListController = GameListController()
     var networkController:NetworkController = NetworkController()
     var gameDetailViewController:GameDetailViewController = GameDetailViewController()
+    var joinGameViewController:JoinGameViewController = JoinGameViewController()
+    var addGameViewController:AddGameViewController = AddGameViewController()
     var gameListNavigationController:UINavigationController
 
     override init() {
         gameListNavigationController = UINavigationController(rootViewController: gameListController)
+
         super.init()
     }
     
@@ -31,10 +34,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
         gameListController.delegate = self
         notificationController.delegate = self
         networkController.delegate = self
-        gameListController.title = "Battleship Lobby"
+        joinGameViewController.delegate = self
+        addGameViewController.addGameView.delegate = self
+        gameListController.title = "Lobby"
         
         // get initial game list
         networkController.network.requestGameList()
+
+        
+
         
         window?.rootViewController = gameListNavigationController
         
@@ -48,6 +56,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
         gameListController.gameList.updateGameList(gameListData)
         gameListController.gameListView.reloadData()
     }
+    
+    func presentAddGameController() {
+        gameListNavigationController.pushViewController(addGameViewController, animated: true)
+    }
+    
+    func createGame() {
+        print(addGameViewController.addGameView.gameNameInput.text!)
+        networkController.network.createGame(addGameViewController.addGameView.gameNameInput.text!, playerName: addGameViewController.addGameView.playerNameInput.text!)
+    }
 
     func presentGameDetailController(gameData: NSDictionary) {
         print("non playable game selected")
@@ -59,8 +76,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
         gameListNavigationController.pushViewController(gameDetailViewController, animated: true)
     }
     
-    func nonPlayableGameSelected(uuid: String) {
+    func nonJoinableGameSelected(uuid: String) {
         networkController.network.requestGameDetail(uuid)
+    }
+    func joinableGameSelected(uuid: String) {
+        joinGameViewController.gameToJoin = uuid
+        gameListNavigationController.pushViewController(joinGameViewController, animated: true)
+        
+    }
+    
+    
+    func joinGame(playerName:String, gameId:String) {
+        networkController.network.joinGame(playerName, gameId: gameId)
     }
     
     func playerTurn(whosTurn:WhosTurn) {

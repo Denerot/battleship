@@ -9,7 +9,8 @@
 import UIKit
 
 protocol GameListControllerDelegate: class {
-    func nonPlayableGameSelected(uuid:String)
+    func nonJoinableGameSelected(uuid:String)
+    func joinableGameSelected(uuid:String)
 }
 
 class GameListController:UIViewController, NSURLSessionDataDelegate, UITableViewDelegate, UITableViewDataSource {
@@ -43,7 +44,10 @@ class GameListController:UIViewController, NSURLSessionDataDelegate, UITableView
         let gameStatus:String = gameList.gameList[indexPath.item]["status"] as! String
         
         if gameStatus == "PLAYING" || gameStatus == "DONE" {
-            delegate?.nonPlayableGameSelected(gameList.gameList[indexPath.item]["id"] as! String)
+            delegate?.nonJoinableGameSelected(gameList.gameList[indexPath.item]["id"] as! String)
+        }
+        else {
+            delegate?.joinableGameSelected(gameList.gameList[indexPath.item]["id"] as! String)
         }
         
     }
@@ -60,5 +64,6 @@ class GameListController:UIViewController, NSURLSessionDataDelegate, UITableView
         super.loadView()
         print("loading view")
         view = gameListView
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: delegate, action: "presentAddGameController")
     }
 }
