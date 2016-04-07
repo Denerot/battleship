@@ -12,6 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, NotificationDelegate, GameListControllerDelegate, NetworkControllerDelegate, JoinGameViewControllerDelegate, AddGameViewDelegate {
 
     var window: UIWindow?
+    var serverPoll = NSTimer()
     var notificationController:NotificationController = NotificationController()
     var gameController:GameViewController = GameViewController()
     var gameListController:GameListController = GameListController()
@@ -105,7 +106,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
         let inProgress = (winner == "IN PROGRESS")
         if inProgress {
             if(isPlayersTurn) {
-                networkController.network.requestPlayerBoard(gameController.game.gameId, playerId: gameController.game.player.playerId)
+                if gameController.game.player.playerBoard.count == 0 {
+                    networkController.network.requestPlayerBoard(gameController.game.gameId, playerId: gameController.game.player.playerId)
+                }
+                else {
+                    serverPoll.invalidate()
+                }
             }
             else {
                 print("not your turn")
@@ -113,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
                     notificationController.notificationView.message = "Waiting for other player"
                     window?.rootViewController = notificationController
                 }
-                NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("checkIfMyTurnYet"), userInfo: nil, repeats: true)
+                serverPoll = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("checkIfMyTurnYet"), userInfo: nil, repeats: true)
                 
             }
         }
