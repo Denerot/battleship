@@ -33,34 +33,33 @@ class GameViewController:UIViewController, UICollectionViewDataSource, UICollect
             let cell = gameView.launchGridView.dequeueReusableCellWithReuseIdentifier("LaunchGridCell", forIndexPath: indexPath) as! GameCell
             cell.layer.borderColor = UIColor.blackColor().CGColor
             
-            if(game.isMyTurn) {
-                if game.player.playerBoard["opponentBoard"]![indexPath.item] as! GridState == GridState.HIT {
-                    cell.cellState = GridState.HIT
-                }
-                else if game.player.playerBoard["opponentBoard"]![indexPath.item] as! GridState == GridState.MISS {
-                    cell.cellState = GridState.MISS
-                }
-                else {
-                    cell.cellState = GridState.NONE
-                }
+            
+            if game.player.playerBoard["opponentBoard"]![indexPath.item] as! GridState == GridState.HIT {
+                cell.cellState = GridState.HIT
             }
+            else if game.player.playerBoard["opponentBoard"]![indexPath.item] as! GridState == GridState.MISS {
+                cell.cellState = GridState.MISS
+            }
+            else {
+                cell.cellState = GridState.NONE
+            }
+            
             return cell
         }
         else {
             let cell = gameView.playerGridView.dequeueReusableCellWithReuseIdentifier("PlayerGridCell", forIndexPath: indexPath) as! GameCell
             cell.layer.borderColor = UIColor.whiteColor().CGColor
             
-            if(game.isMyTurn) {
-                if game.player.playerBoard["playerBoard"]![indexPath.item] as! GridState == GridState.SHIP {
-                    cell.cellState = GridState.SHIP
-                }
-                else if game.player.playerBoard["playerBoard"]![indexPath.item] as! GridState == GridState.HIT {
-                    cell.cellState = GridState.HIT
-                }
-                else {
-                    cell.cellState = GridState.NONE
-                }
+            if game.player.playerBoard["playerBoard"]![indexPath.item] as! GridState == GridState.SHIP {
+                cell.cellState = GridState.SHIP
             }
+            else if game.player.playerBoard["playerBoard"]![indexPath.item] as! GridState == GridState.HIT {
+                cell.cellState = GridState.HIT
+            }
+            else {
+                cell.cellState = GridState.NONE
+            }
+            
             return cell
         }
     }
