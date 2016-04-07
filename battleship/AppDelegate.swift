@@ -110,7 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
             else {
                 print("not your turn")
                 if window?.rootViewController != notificationController {
-                    notificationController.notificationView.message = "Waiting for other player to make a move"
+                    notificationController.notificationView.message = "Waiting for other player"
                     window?.rootViewController = notificationController
                 }
                 NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("checkIfMyTurnYet"), userInfo: nil, repeats: true)
@@ -135,6 +135,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
         gameController.game.player.playerBoard = playerGrids
 
         window?.rootViewController = gameController
+        gameController.gameView.launchGridView.reloadData()
+        gameController.gameView.playerGridView.reloadData()
     }
 
     func presentGameDetailController(gameData: NSDictionary) {
