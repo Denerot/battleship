@@ -23,28 +23,26 @@ enum GameStatus:Int {
 
 class Game {
     
-    var whosTurnIsIt:WhosTurn;
+    var isMyTurn:Bool;
     
-    let playerOne:Player
-    let playerTwo:Player
-    var gameJSON:NSMutableDictionary = NSMutableDictionary()
-    var gameId:NSUUID
-    /*let uuid:NSUUID
-    var gameState:GameState
-    var name:String = "shaboopi"
-    var status:GameStatus = .WAITING*/
+    let player:Player
+    var gameId:String
     
-    init(gameId:NSUUID) {
+    init(gameId:String) {
         self.gameId = gameId
-        playerOne = Player()
-        playerTwo = Player()
-        whosTurnIsIt = WhosTurn.PlayerOne
+        player = Player()
+        isMyTurn = false;
     }
     
-    init(gameId:NSUUID, whosTurn:WhosTurn) {
+    init(gameId:String, isMyTurn:Bool) {
         self.gameId = gameId
-        playerOne = Player()
-        playerTwo = Player()
-        whosTurnIsIt = whosTurn
+        player = Player()
+        self.isMyTurn = isMyTurn
+    }
+    
+    init() {
+        self.gameId = ""
+        self.player = Player(playerId: "")
+        self.isMyTurn = false
     }
 }

@@ -11,7 +11,11 @@ import UIKit
 class NotificationView:UIView {
     private var messageLabel:UILabel = UILabel()
     private var cellStateHelp:UILabel = UILabel()
-    private var stateDescriptions:String = "Blue = Empty, Hit = Orange, Miss = Yellow, Ship = Gray, Sunk = Red. Your ships are on the bottom grid. Launch missiles by clicking a spot on the top grid."
+    var stateDescriptions:String = "Blue = Empty, Hit = Orange, Miss = Yellow, Ship = Gray, Sunk = Red. Your ships are on the bottom grid. Launch missiles by clicking a spot on the top grid." {
+        didSet {
+            cellStateHelp.text = stateDescriptions
+        }
+    }
     var message:String = "" {
         didSet {
             messageLabel.text = message

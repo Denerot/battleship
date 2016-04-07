@@ -9,7 +9,7 @@
 import UIKit
 
 class GameCell:UICollectionViewCell {
-    var cellState:GridState = GridState.Empty {
+    var cellState:GridState = GridState.NONE {
         didSet {
             updateLabel()
         }
@@ -28,16 +28,14 @@ class GameCell:UICollectionViewCell {
     
     func updateLabel() {
         switch cellState {
-        case .Empty:
+        case .NONE:
             backgroundColor = UIColor.blueColor()
-        case .Hit:
-            backgroundColor = UIColor.orangeColor()
-        case .Miss:
-            backgroundColor = UIColor.yellowColor()
-        case .Ship:
-            backgroundColor = UIColor.grayColor()
-        case .Sunk:
+        case .HIT:
             backgroundColor = UIColor.redColor()
+        case .MISS:
+            backgroundColor = UIColor.yellowColor()
+        case .SHIP:
+            backgroundColor = UIColor.grayColor()
         }
     }
 }

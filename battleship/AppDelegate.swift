@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
         // Override point for customization after application launch.
         window = UIWindow()
         gameController.delegate = self
+        gameController.appDelegate = self
         gameListController.delegate = self
         notificationController.delegate = self
         networkController.delegate = self
@@ -65,14 +66,64 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
     
     func openNewGame(gameDictionary:NSDictionary) {
         //gameListNavigationController.pushViewController(gameController, animated: true)
-        window?.rootViewController = gameController
-        gameController.game = Game(gameId: gameDictionary["gameId"] as! NSUUID, whosTurn: WhosTurn.PlayerOne)
-        gameController.game.playerOne.playerId = gameDictionary["playerId"] as! NSUUID
-        networkController.network.requestPlayerBoard(gameController.game.gameId, playerId: gameController.game.playerOne.playerId)
+        gameController.game = Game(gameId: gameDictionary["gameId"] as! String, isMyTurn: false)
+        gameController.game.player.playerId = gameDictionary["playerId"] as! String
+        print("waiting for other player, present notification controller.")
+        checkIfMyTurnYet()
+        //networkController.network.requestPlayerBoard(gameController.game.gameId, playerId: gameController.game.playerOne.playerId)
     }
     
     func openExistingGame(playerIdDictionary: NSDictionary) {
         //gameListNavigationController.pushViewController(gameController, animated: true)
+        gameController.game = Game(gameId: joinGameViewController.gameToJoin)
+        gameController.game.player.playerId = playerIdDictionary["playerId"] as! String
+        checkIfMyTurnYet()
+        
+        //
+    }
+    
+    func launchMissile(boardIndex:Int) {
+        networkController.network.launchMissile(gameController.game.gameId, playerId: gameController.game.player.playerId, boardIndexDictionary: gameController.game.player.playerBoard["opponentBoard"]![boardIndex] as! NSDictionary)
+    }
+    
+    func missileResult(missileResultDictionary:NSDictionary) {
+        let hit:Bool = missileResultDictionary["hit"] as! Bool
+        let shipSunk:Int = missileResultDictionary["shipSunk"] as! Int
+        if  shipSunk > 0 {
+            notificationController.notificationView.stateDescriptions = "You sunk a ship of size \(shipSunk)!"
+        }
+        else if hit {
+            notificationController.notificationView.stateDescriptions = "You hit a ship! Good job, that square will show up as red next time it's your turn"
+        }
+        else {
+            notificationController.notificationView.stateDescriptions = "You missed :("
+        }
+        checkIfMyTurnYet()
+    }
+    
+    func updateWhosTurn(isPlayersTurn:Bool, gameId:String, playerId:String) {
+        if(isPlayersTurn) {
+            networkController.network.requestPlayerBoard(gameController.game.gameId, playerId: gameController.game.player.playerId)
+        }
+        else {
+            print("not your turn")
+            if window?.rootViewController != notificationController {
+            notificationController.notificationView.message = "Waiting for other player to make a move"
+            window?.rootViewController = notificationController
+            }
+            NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("checkIfMyTurnYet"), userInfo: nil, repeats: true)
+            
+        }
+    }
+    
+    func checkIfMyTurnYet() {
+        networkController.network.isMyTurn(gameController.game.gameId, playerId: gameController.game.player.playerId)
+    }
+    
+    func updateGameBoard(gameId:String, playerId:String, playerGrids:NSDictionary) {
+        
+        gameController.game.player.playerBoard = playerGrids
+
         window?.rootViewController = gameController
     }
 
@@ -97,28 +148,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
     
     func joinGame(playerName:String, gameId:String) {
         networkController.network.joinGame(playerName, gameId: gameId)
-    }
-    
-    func updateGameBoard(gameId:NSUUID, playerId:NSUUID, playerGrids:NSDictionary) {
-        if gameController.game.playerOne.playerId == playerId {
-            gameController.game.playerOne.playerBoard = playerGrids
-        }
-        else if gameController.game.playerTwo.playerId == playerId {
-            gameController.game.playerTwo.playerBoard = playerGrids
-            gameController.gameView.launchGridView.reloadData()
-            gameController.gameView.playerGridView.reloadData()
-        }
-        else {
-            print("ERROR playerid for playerboard doesn't match either player in game")
-        }
-    }
-    
-    func playerTurn(whosTurn:WhosTurn) {
-        notificationController.notificationView.message = "\(whosTurn)'s turn, please pass the device."
-        gameController.presentViewController(notificationController, animated: true, completion: {
-            self.gameController.gameView.launchGridView.reloadData()
-            self.gameController.gameView.playerGridView.reloadData()
-        })
     }
     
     func playerWon(whoWon:GameState) {

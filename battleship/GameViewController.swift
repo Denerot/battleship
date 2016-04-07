@@ -9,7 +9,6 @@
 import UIKit
 
 protocol GameDelegate: class {
-    func playerTurn(whosTurn:WhosTurn)
     func playerWon(whoWon:GameState)
 }
 
@@ -17,6 +16,7 @@ class GameViewController:UIViewController, UICollectionViewDataSource, UICollect
     var gameView:GameView
     var game:Game
     weak var delegate: GameDelegate? = nil
+    weak var appDelegate:AppDelegate? = nil
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         gameView = GameView()
@@ -33,22 +33,11 @@ class GameViewController:UIViewController, UICollectionViewDataSource, UICollect
             let cell = gameView.launchGridView.dequeueReusableCellWithReuseIdentifier("LaunchGridCell", forIndexPath: indexPath) as! GameCell
             cell.layer.borderColor = UIColor.blackColor().CGColor
             
-            if(game.whosTurnIsIt == WhosTurn.PlayerOne) {
-                if game.playerOne.playerBoard["opponentBoard"]![indexPath.item] as! GridState == GridState.HIT {
+            if(game.isMyTurn) {
+                if game.player.playerBoard["opponentBoard"]![indexPath.item] as! GridState == GridState.HIT {
                     cell.cellState = GridState.HIT
                 }
-                else if game.playerOne.playerBoard["opponentBoard"]![indexPath.item] as! GridState == GridState.MISS {
-                    cell.cellState = GridState.MISS
-                }
-                else {
-                    cell.cellState = GridState.NONE
-                }
-            }
-            else {
-                if game.playerTwo.playerBoard["opponentBoard"]![indexPath.item] as! GridState == GridState.HIT {
-                    cell.cellState = GridState.HIT
-                }
-                else if game.playerTwo.playerBoard["opponentBoard"]![indexPath.item] as! GridState == GridState.MISS {
+                else if game.player.playerBoard["opponentBoard"]![indexPath.item] as! GridState == GridState.MISS {
                     cell.cellState = GridState.MISS
                 }
                 else {
@@ -61,53 +50,23 @@ class GameViewController:UIViewController, UICollectionViewDataSource, UICollect
             let cell = gameView.playerGridView.dequeueReusableCellWithReuseIdentifier("PlayerGridCell", forIndexPath: indexPath) as! GameCell
             cell.layer.borderColor = UIColor.whiteColor().CGColor
             
-            if(game.whosTurnIsIt == WhosTurn.PlayerOne) {
-                if game.playerOne.playerGrid[indexPath.row][indexPath.section] == GridState.Ship {
-                    cell.cellState = GridState.Ship
+            if(game.isMyTurn) {
+                if game.player.playerBoard["playerBoard"]![indexPath.item] as! GridState == GridState.SHIP {
+                    cell.cellState = GridState.SHIP
                 }
-                else if game.playerOne.playerGrid[indexPath.row][indexPath.section] == GridState.Hit {
-                    cell.cellState = GridState.Hit
-                }
-                else if game.playerOne.playerGrid[indexPath.row][indexPath.section] == GridState.Sunk {
-                    cell.cellState = GridState.Sunk
+                else if game.player.playerBoard["playerBoard"]![indexPath.item] as! GridState == GridState.HIT {
+                    cell.cellState = GridState.HIT
                 }
                 else {
-                    cell.cellState = GridState.Empty
-                }
-            }
-            else {
-                if game.playerTwo.playerGrid[indexPath.row][indexPath.section] == GridState.Ship {
-                    cell.cellState = GridState.Ship
-                }
-                else if game.playerTwo.playerGrid[indexPath.row][indexPath.section] == GridState.Hit {
-                    cell.cellState = GridState.Hit
-                }
-                else if game.playerTwo.playerGrid[indexPath.row][indexPath.section] == GridState.Sunk {
-                    cell.cellState = GridState.Sunk
-                }
-                else {
-                    cell.cellState = GridState.Empty
+                    cell.cellState = GridState.NONE
                 }
             }
             return cell
         }
     }
     
-    /* Since this controller is only a delegate for the launch grid, we don't need to check which collectionView
-     * is calling this, it's guaranteed to be the launchGrid */
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        /*print("firing missile to \(indexPath.row),\(indexPath.section)")
-        game.launchMissle(Coordinate(x: indexPath.row, y: indexPath.section), whosTurn: game.whosTurnIsIt)
-        print("Other person's turn, no peeking!")
-        if(game.gameState == GameState.PlayerOneWon) {
-            delegate?.playerWon(GameState.PlayerOneWon)
-        }
-        else if game.gameState == GameState.PlayerTwoWon {
-            delegate?.playerWon(GameState.PlayerTwoWon)
-        }
-        else {
-            delegate?.playerTurn(game.whosTurnIsIt)
-        }*/
+        appDelegate.launchMissile(indexPath.item)
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
