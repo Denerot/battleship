@@ -102,7 +102,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
     }
     
     func updateWhosTurn(isPlayersTurn:Bool, winner:String, gameId:String, playerId:String) {
-        if winner != "IN PROGRESS" {
+        let inProgress = (winner == "IN PROGRESS")
+        if inProgress {
             if(isPlayersTurn) {
                 networkController.network.requestPlayerBoard(gameController.game.gameId, playerId: gameController.game.player.playerId)
             }
