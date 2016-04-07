@@ -34,10 +34,10 @@ class GameViewController:UIViewController, UICollectionViewDataSource, UICollect
             cell.layer.borderColor = UIColor.blackColor().CGColor
             
             
-            if game.player.playerBoard["opponentBoard"]![indexPath.item] as! String == "HIT" {
+            if game.player.playerBoard["opponentBoard"]![indexPath.item]["status"]  as! String == "HIT" {
                 cell.cellState = GridState.HIT
             }
-            else if game.player.playerBoard["opponentBoard"]![indexPath.item] as! String == "MISS" {
+            else if game.player.playerBoard["opponentBoard"]![indexPath.item]["status"]  as! String == "MISS" {
                 cell.cellState = GridState.MISS
             }
             else {
@@ -50,10 +50,10 @@ class GameViewController:UIViewController, UICollectionViewDataSource, UICollect
             let cell = gameView.playerGridView.dequeueReusableCellWithReuseIdentifier("PlayerGridCell", forIndexPath: indexPath) as! GameCell
             cell.layer.borderColor = UIColor.whiteColor().CGColor
             
-            if game.player.playerBoard["playerBoard"]![indexPath.item] as! String == "SHIP" {
+            if game.player.playerBoard["playerBoard"]![indexPath.item]["status"] as! String == "SHIP" {
                 cell.cellState = GridState.SHIP
             }
-            else if game.player.playerBoard["playerBoard"]![indexPath.item] as! String == "HIT" {
+            else if game.player.playerBoard["playerBoard"]![indexPath.item]["status"]  as! String == "HIT" {
                 cell.cellState = GridState.HIT
             }
             else {
