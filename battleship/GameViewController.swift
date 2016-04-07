@@ -66,7 +66,7 @@ class GameViewController:UIViewController, UICollectionViewDataSource, UICollect
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        appDelegate.launchMissile(indexPath.item)
+        appDelegate!.launchMissile(indexPath.item)
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

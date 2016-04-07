@@ -151,7 +151,7 @@ class Network {
                     else
                     {
                         let isPlayersTurn:NSDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions()) as! NSDictionary
-                        self.appDelegate!.updateWhosTurn(isPlayersTurn["isYourTurn"] as! Bool, gameId: gameId, playerId: playerId)
+                        self.appDelegate!.updateWhosTurn(isPlayersTurn["isYourTurn"] as! Bool, winner: isPlayersTurn["winner"] as! String, gameId: gameId, playerId: playerId)
                         //try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions()))
                     }
                 }

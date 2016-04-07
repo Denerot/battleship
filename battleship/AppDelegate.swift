@@ -101,19 +101,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
         checkIfMyTurnYet()
     }
     
-    func updateWhosTurn(isPlayersTurn:Bool, gameId:String, playerId:String) {
-        if(isPlayersTurn) {
-            networkController.network.requestPlayerBoard(gameController.game.gameId, playerId: gameController.game.player.playerId)
+    func updateWhosTurn(isPlayersTurn:Bool, winner:String, gameId:String, playerId:String) {
+        if winner != "IN PROGRESS" {
+            if(isPlayersTurn) {
+                networkController.network.requestPlayerBoard(gameController.game.gameId, playerId: gameController.game.player.playerId)
+            }
+            else {
+                print("not your turn")
+                if window?.rootViewController != notificationController {
+                    notificationController.notificationView.message = "Waiting for other player to make a move"
+                    window?.rootViewController = notificationController
+                }
+                NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("checkIfMyTurnYet"), userInfo: nil, repeats: true)
+                
+            }
         }
         else {
-            print("not your turn")
             if window?.rootViewController != notificationController {
-            notificationController.notificationView.message = "Waiting for other player to make a move"
-            window?.rootViewController = notificationController
+                notificationController.notificationView.message = "\(winner) won the game! Please restart app."
+                window?.rootViewController = notificationController
             }
-            NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("checkIfMyTurnYet"), userInfo: nil, repeats: true)
-            
         }
+
     }
     
     func checkIfMyTurnYet() {
