@@ -106,12 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
         let inProgress = (winner == "IN PROGRESS")
         if inProgress {
             if(isPlayersTurn) {
-                if gameController.game.player.playerBoard.count == 0 {
                     networkController.network.requestPlayerBoard(gameController.game.gameId, playerId: gameController.game.player.playerId)
-                }
-                else {
-                    serverPoll.invalidate()
-                }
             }
             else {
                 print("not your turn")
@@ -139,7 +134,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GameDelegate, Notificatio
     func updateGameBoard(gameId:String, playerId:String, playerGrids:NSDictionary) {
         
         gameController.game.player.playerBoard = playerGrids
-
+        serverPoll.invalidate()
         window?.rootViewController = gameController
         gameController.gameView.launchGridView.reloadData()
         gameController.gameView.playerGridView.reloadData()
